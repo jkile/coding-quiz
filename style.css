@@ -1,9 +1,6 @@
 .space{
-
     height: 400px;
-
 }
-
 #formOne{
     display: none;
 }
@@ -20,5 +17,8 @@
     display: none;
 }
 #scoreEntry{
+    display: none;
+}
+#highscores{
     display: none;
 }

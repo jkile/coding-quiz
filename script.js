@@ -11,7 +11,7 @@ function decrementTimer() {
 }
 
 
-function stopTimer(){
+function stopTimer() {
     clearInterval(clock);
 }
 
@@ -21,6 +21,7 @@ let answers = ["Option 1"];
 document.getElementById("startQuiz").addEventListener("click", function () {
     document.getElementById("home").style = "display: none";
     document.getElementById("formOne").style = "display: block";
+    document.getElementById("timer").style = "display: block";
     clock = setInterval(decrementTimer, 1000)
 });
 
@@ -81,5 +82,67 @@ function answerCheck(answer) {
 }
 
 document.getElementById("submitHighscore").addEventListener("click", function (e) {
-    
+    e.preventDefault();
+
+    let initials = document.getElementById("inputInitials").value;
+    let namesList = JSON.parse(localStorage.getItem("userInitials")) || [];
+    let scoresList = JSON.parse(localStorage.getItem("userScore")) || [];
+
+    namesList.push(initials);
+    scoresList.push(timer);
+
+    localStorage.setItem("userInitials", JSON.stringify(namesList));
+    localStorage.setItem("userScore", JSON.stringify(scoresList));
+
+    document.getElementById("scoreEntry").style = "display: none";
+    document.getElementById("highscores").style = "display: block";
+
+    displayScores();
 })
+
+function displayScores() {
+
+    let namesList = document.getElementById("namesList");
+    let scoresList = document.getElementById("scoresList");
+
+    while (namesList.firstChild) {
+        namesList.removeChild(namesList.firstChild);
+    }
+    while (scoresList.firstChild) {
+        scoresList.removeChild(scoresList.firstChild);
+    }
+
+    let initials = JSON.parse(localStorage.getItem("userInitials")) || [];
+    let scoreArray = JSON.parse(localStorage.getItem("userScore")) || [];
+
+    for (let i = initials.length - 1; i > -1; i--) {
+
+        let name = document.createElement("p");
+        name.textContent = initials[i];
+        namesList.appendChild(name);
+        name.setAttribute("class", "bg-secondary text-light rounded shadow");
+
+        let score = document.createElement("p");
+        score.textContent = scoreArray[i];
+        scoresList.appendChild(score);
+        score.setAttribute("class", "bg-secondary text-light rounded shadow");
+    }
+
+
+}
+
+document.getElementById("clearHighscores").addEventListener("click", function () {
+
+    localStorage.clear();
+    displayScores();
+
+});
+
+document.getElementById("restart").addEventListener("click", function () {
+
+    document.getElementById("highscores").style = "display: none";
+    document.getElementById("home").style = "display: block";
+    document.getElementById("timer").style = "display: none";
+    timer = 99;
+
+});
