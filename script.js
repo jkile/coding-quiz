@@ -1,5 +1,6 @@
 let timer = 99;
 let clock;
+let currentForm = 0;
 
 function decrementTimer() {
     timer--;
@@ -15,7 +16,7 @@ function stopTimer() {
     clearInterval(clock);
 }
 
-let answers = ["Option 1"];
+let answers = ["alerts", "parentheses", "all of the above", "quotes", "console.log"];
 
 
 document.getElementById("startQuiz").addEventListener("click", function () {
@@ -73,12 +74,16 @@ document.getElementById("formFive").addEventListener("click", function (e) {
 
 
 function answerCheck(answer) {
+    let answerNode = document.getElementsByClassName("answer");
     if (answers.includes(answer)) {
-        document.querySelectorAll("p.answer").textContent = "Correct!";
+        answerNode[currentForm].textContent = "Correct!";
+        
     } else {
-        document.querySelectorAll("p.answer").textContent = "Incorrect";
+        answerNode[currentForm].textContent = "Incorrect";
         timer = timer - 10;
     }
+    
+    currentForm++;
 }
 
 document.getElementById("submitHighscore").addEventListener("click", function (e) {
@@ -144,5 +149,5 @@ document.getElementById("restart").addEventListener("click", function () {
     document.getElementById("home").style = "display: block";
     document.getElementById("timer").style = "display: none";
     timer = 99;
-
+    currentForm = 0;
 });
